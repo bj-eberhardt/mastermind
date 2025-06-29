@@ -1,4 +1,4 @@
-import { Result } from './Game.js';
+import { Result } from './Game.ts';
 
 export interface GameRow {
   guesses: string[] | undefined[];

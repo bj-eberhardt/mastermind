@@ -77,8 +77,8 @@ export class Game {
       throw new Error('Game not running anymore or not started yet.');
     }
 
-    const computed = [...this.computedColors];
-    const guessed = [...colors];
+    const computed: (string | null)[] = [...this.computedColors];
+    const guessed: (string | null)[] = [...colors];
     let matchesExact = 0;
     let matchedColor = 0;
 

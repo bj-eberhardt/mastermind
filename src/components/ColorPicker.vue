@@ -1,12 +1,14 @@
 <template>
-  <div class="color-picker">
+  <div
+    class="mt-[30px] flex justify-center gap-[15px] rounded-3xl border-2 border-green-600 bg-[rgba(227,231,244,0.5)] p-4"
+  >
     <div
-      :key="index"
       v-for="(color, index) in colors"
+      :key="index"
       :style="{ background: color }"
       draggable="true"
       @dragstart="dragStart($event, color)"
-      class="color"
+      class="h-7 w-7 cursor-pointer rounded-full border-2 border-gray-500"
     ></div>
   </div>
 </template>
@@ -22,20 +24,3 @@ function dragStart(ev: DragEvent, color: string) {
   }
 }
 </script>
-<style scoped lang="scss">
-.color-picker {
-  padding: 1em;
-  border-radius: 2em;
-  border: solid 2px green;
-  /*background: rgba(coral, 0.5);*/
-  background: rgba(227, 231, 244, 0.5);
-}
-
-.color {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 2px solid #888;
-  cursor: pointer;
-}
-</style>

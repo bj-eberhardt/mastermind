@@ -1,15 +1,10 @@
 <template>
-  <div class="field flex flex-col">
-    <div class="solution flex">
-      <solution
-        v-if="false"
+  <div class="flex flex-col">
+    <div class="flex self-center">
+      <solution-panel
         :open="['won', 'loose'].includes(game.getGameState())"
         :solution="solution"
-      ></solution>
-      <solution-new
-        :open="['won', 'loose'].includes(game.getGameState())"
-        :solution="solution"
-      ></solution-new>
+      ></solution-panel>
     </div>
 
     <div class="user-input rounds flex flex-col-reverse">
@@ -36,7 +31,7 @@ import { computed, reactive, ref, watch } from 'vue';
 import { GameRow } from '../types/GameRow.js';
 import { getArrayWith } from '../utils/sharedUtils.js';
 import BoardButton from './BoardButton.vue';
-import SolutionNew from './SolutionNew.vue';
+import SolutionPanel from './SolutionPanel.vue';
 import RoundLine from './RoundLine.vue';
 
 const props = defineProps<{
@@ -88,8 +83,3 @@ watch(
   }
 );
 </script>
-<style scoped>
-.solution {
-  align-self: center;
-}
-</style>

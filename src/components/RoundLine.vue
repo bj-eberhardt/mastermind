@@ -1,39 +1,55 @@
 <template>
-  <div class="row" v-if="data" :class="{ readonly: prop.readonly, highlighted: !prop.readonly }">
-    <div class="pegs">
+  <div
+    v-if="data"
+    :class="[
+      'row relative flex items-center pt-4 pb-4 pl-12',
+      prop.readonly ? '' : 'highlighted',
+      !prop.readonly ? '' : 'readonly',
+      'border-t border-dotted border-gray-400 last:border-none',
+    ]"
+  >
+    <div class="flex gap-2.5">
       <template v-if="prop.readonly">
         <div
           v-for="(item, index) in data.guesses"
           :key="index"
-          class="peg"
-          :style="{ background: item ?? '' }"
+          class="h-[30px] w-[30px] rounded-full border-2 border-[#888888] bg-[#444444]"
+          :style="{ background: item ?? '#444' }"
         />
       </template>
       <template v-else>
         <div
           v-for="(item, index) in data.guesses"
           :key="index"
-          class="peg"
-          :style="{ background: item ?? '' }"
+          class="h-[30px] w-[30px] rounded-full border-2 border-[#888888] bg-[#444444]"
+          :style="{ background: item ?? '#444' }"
           @dragover.prevent
           @dragenter.prevent
           @drop="dropHandler(index, $event)"
         />
       </template>
     </div>
-    <div class="feedback">
+
+    <div class="ml-5 grid grid-cols-2 grid-rows-2 gap-0.75">
       <div
-        class="feedback-peg"
-        :class="[item]"
         v-for="(item, index) in data.results"
         :key="index"
+        class="h-3 w-3 rounded-full border border-[#f7e7d2]"
+        :class="{
+          'bg-white': item === 'white',
+          'bg-black': item === 'black',
+          'bg-transparent': item === 'noMatch',
+          'bg-gray-400': !['white', 'black', 'noMatch'].includes(item),
+        }"
       ></div>
     </div>
-    <div class="slot">
+
+    <div class="ml-8">
       <slot></slot>
     </div>
   </div>
 </template>
+
 <script lang="ts" setup>
 import { GameRow } from '../types/GameRow';
 import { unref } from 'vue';
@@ -60,62 +76,8 @@ function dropHandler(index: number, ev: DragEvent) {
 }
 </script>
 <style scoped>
-.slot {
-  margin-left: 2em;
-}
-
-.row {
-  display: flex;
-  align-items: center;
-  padding-left: 3em;
-  padding-top: 1em;
-  padding-bottom: 1em;
-  position: relative;
-}
-
 .row:not(:last-child) {
   border-top: 2px dotted gray;
-}
-
-.pegs {
-  display: flex;
-  gap: 10px;
-}
-
-.peg {
-  width: 30px;
-  height: 30px;
-  background: #444;
-  border-radius: 50%;
-  border: 2px solid #888;
-}
-
-.feedback {
-  display: grid;
-  grid-template-columns: repeat(2, 12px);
-  grid-template-rows: repeat(2, 12px);
-  gap: 3px;
-  margin-left: 20px;
-}
-
-.feedback-peg {
-  width: 12px;
-  height: 12px;
-  background: #bbb;
-  border-radius: 50%;
-  border: 1px solid antiquewhite;
-}
-
-.feedback-peg.white {
-  background: white;
-}
-
-.feedback-peg.black {
-  background: black;
-}
-
-.feedback-peg.noMatch {
-  background: unset;
 }
 
 .row.highlighted::before {
@@ -125,7 +87,7 @@ function dropHandler(index: number, ev: DragEvent) {
   top: 50%;
   transform: translateY(-50%);
   font-size: 2em;
-  color: #1d4ed8; /* Tailwind blue-700 z.B. */
+  color: #1d4ed8;
   line-height: 1;
 }
 </style>

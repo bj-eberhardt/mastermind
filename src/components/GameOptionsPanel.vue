@@ -1,11 +1,6 @@
 <template>
   <div>
-    {{ modelValue }}
-
     <div v-if="modelValue" class="mx-auto max-w-md space-y-6 rounded-xl bg-white p-6 shadow-lg">
-      <h2 class="text-center text-2xl font-bold">Spiel Einstellungen</h2>
-
-      <!-- Rundenanzahl -->
       <div>
         <label class="mb-1 block text-sm font-medium">Anzahl Runden (5–30):</label>
         <input
@@ -18,8 +13,6 @@
         />
         <p v-if="!validRounds" class="text-sm text-red-500">Wert muss zwischen 5 und 30 liegen.</p>
       </div>
-
-      <!-- Spielfelder -->
       <div>
         <label class="mb-1 block text-sm font-medium">Anzahl Felder (3–5):</label>
         <input
@@ -33,7 +26,6 @@
         <p v-if="!validFields" class="text-sm text-red-500">Wert muss zwischen 3 und 5 liegen.</p>
       </div>
 
-      <!-- Farbduplikate erlauben -->
       <div class="flex items-center space-x-2">
         <input
           type="checkbox"
@@ -44,7 +36,6 @@
         <label for="colorDuplicate" class="text-sm">Doppelte Farben erlauben</label>
       </div>
 
-      <!-- Farbanzahl -->
       <div>
         <label class="mb-1 block text-sm font-medium">
           Anzahl Farben ({{ minColorCount }}–8):
@@ -62,7 +53,6 @@
         </p>
       </div>
 
-      <!-- Vorschau der ausgewählten Farben -->
       <div class="mt-4 flex flex-wrap gap-2">
         <div
           v-for="(color, index) in modelValue.colors"
@@ -85,17 +75,13 @@ const predefinedColors = ['red', 'blue', 'green', 'yellow', 'purple', 'orange', 
 
 const emit = defineEmits<(e: 'validation', isValid: boolean) => void>();
 
-// 🧮 Farbanzahl getrennt verwalten
 const colorCount = ref((model.value?.fields ?? 4) + 2);
-
-// ➕ Mindestanzahl Farben (abhängig von Felderanzahl)
 const minColorCount = computed(() => (model.value?.fields ?? 4) + 2);
 
 onMounted(() => {
   if (!model.value) return;
 });
 
-// ✅ Validierung
 const validRounds = computed(
   () => model.value && model.value.roundsCount >= 5 && model.value.roundsCount <= 30
 );
@@ -113,16 +99,6 @@ const isFormValid = computed(() => {
   const validRounds = model.value.roundsCount >= 5 && model.value.roundsCount <= 30;
   const validFields = model.value.fields >= 3 && model.value.fields <= 5;
   const validColors = colorCount.value >= minColorCount.value && colorCount.value <= 8;
-  console.debug(
-    'isFormValid',
-    'isValid',
-    'rounds',
-    validRounds,
-    'fields',
-    validFields,
-    'colorCount',
-    validColors
-  );
   return validRounds && validFields && validColors;
 });
 
@@ -151,5 +127,3 @@ if (model.value) {
   );
 }
 </script>
-
-<style scoped></style>

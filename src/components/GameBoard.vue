@@ -14,14 +14,18 @@ const showOptionsDialog = ref(false);
 const showWinDialog = ref(true);
 const showLooseDialog = ref(false);
 
+// default options
 const options = reactive<GameOptions>({
   roundsCount: 3,
   fields: 4,
   allowColorDuplicate: false,
   colors: ['red', 'blue', 'green', 'yellow', 'purple', 'cyan'],
 });
+
+// needed for repainting if new game was started
 const inGame = ref(true);
 
+// load settings from localstorage
 const loadGameSettings = (): void => {
   const settings = localStorage.getItem('settings');
   if (!settings) {
@@ -29,23 +33,25 @@ const loadGameSettings = (): void => {
   }
   const parsed = JSON.parse(settings) as GameOptions;
   Object.assign(options, parsed);
-  console.debug(`Loaded settings: ${settings}`);
-  console.debug('options', options);
+  console.debug(`Loaded settings: ${settings}`, options);
 };
 
+// save settings to localstorage
 const saveSettings = (): void => {
   const settings = JSON.stringify(options);
   console.debug(`Save settings: ${settings}`);
   localStorage.setItem('settings', settings);
 };
 
+// start new game by forcing a repaint of component
 const newGame = async (): Promise<void> => {
   inGame.value = false;
   await nextTick();
   inGame.value = true;
 };
 
-const showDialog = async (type: 'win' | 'loose'): Promise<void> => {
+// showing end game dialog
+const showEndGameDialog = async (type: 'win' | 'loose'): Promise<void> => {
   await sleep(1000);
   switch (type) {
     case 'win':
@@ -64,14 +70,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mastermind-board" :style="{ backgroundImage: `url(${woodTexture})` }">
+  <div
+    class="mx-auto w-[475px] rounded-[15px] border-[5px] border-black bg-[saddlebrown] p-5"
+    :style="{ backgroundImage: `url(${woodTexture})` }"
+  >
     <Overlay
-      title="Settings"
+      title="Einstellungen"
       confirm="OK"
       :show-cancel="false"
       cancel="Cancel"
       v-if="showOptionsDialog"
-      :message="'Sind Sie sicher, dass Sie fortfahren möchten?'"
+      :message="'Bitte nehmen Sie die Einstellungen vor.'"
       @confirm="
         showOptionsDialog = false;
         saveSettings();
@@ -93,8 +102,8 @@ onMounted(() => {
     <gameplay-board
       v-if="inGame"
       :options="options"
-      @won="showDialog('win')"
-      @loose="showDialog('loose')"
+      @won="showEndGameDialog('win')"
+      @loose="showEndGameDialog('loose')"
     ></gameplay-board>
 
     <div class="color-picker mt-15">

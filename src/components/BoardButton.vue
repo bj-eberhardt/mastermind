@@ -17,5 +17,5 @@ withDefaults(
   }>(),
   { disabled: false, hidden: false }
 );
-defineEmits<(e: 'click') => void>();
+defineEmits<(event: 'click') => void>();
 </script>
