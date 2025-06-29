@@ -16,7 +16,7 @@ const showLooseDialog = ref(false);
 
 // default options
 const options = reactive<GameOptions>({
-  roundsCount: 3,
+  roundsCount: 5,
   fields: 4,
   allowColorDuplicate: false,
   colors: ['red', 'blue', 'green', 'yellow', 'purple', 'cyan'],
