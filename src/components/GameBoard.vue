@@ -11,7 +11,7 @@ import GameOptionsPanel from './GameOptionsPanel.vue';
 import Toast from './Toast.vue';
 
 const showOptionsDialog = ref(false);
-const showWinDialog = ref(true);
+const showWinDialog = ref(false);
 const showLooseDialog = ref(false);
 
 // default options
