@@ -34,10 +34,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: 🏗️ Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:latest
+      - name: Build Docker image
+        run: |
+          docker build -t mastermind-vue:test .
+
+      - name: Test Docker image
+        run: |
+          docker run -d -p 8080:80 --name test-container mastermind-vue:test
+          sleep 5
+          curl --fail http://localhost:8080 || (docker logs test-container && exit 1)
+          docker stop test-container
+
+      - name: Tag and push Docker image
+        if: success()
+        run: |
+          docker tag mastermind-vue:test ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:latest
