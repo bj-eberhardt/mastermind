@@ -42,7 +42,7 @@ jobs:
         run: |
           docker run -d -p 8080:80 --name test-container mastermind-vue:test
           sleep 5
-          curl --fail http://localhost:8080 || (docker logs test-container && exit 1)
+          curl --fail http://localhost:8080 && curl -s http://localhost:8080 | grep -q "<title>Mastermind</title>" || (docker logs test-container && exit 1)
           docker stop test-container
 
       - name: Tag and push Docker image
