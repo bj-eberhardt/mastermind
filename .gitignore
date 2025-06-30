@@ -40,5 +40,8 @@ coverage/
 test-output/
 *.log
 
+# Idea project file
+*.iml
+
 #
 build-output/
