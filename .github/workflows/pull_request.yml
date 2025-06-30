@@ -82,4 +82,4 @@ jobs:
 
       - name: Cleanup
         if: always()
-        run: docker rm -f test-container || true     
+        run: docker rm -f test-container || true
