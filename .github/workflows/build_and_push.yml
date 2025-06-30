@@ -65,6 +65,9 @@ jobs:
           curl --fail http://localhost:8080 && curl -s http://localhost:8080 | grep -q "<title>Mastermind</title>" || (docker logs test-container && exit 1)
           docker stop test-container
 
+      - name: Pull with rebase before pushing
+        run: git pull --rebase origin master
+
       - name: Push version and tag
         run: |
           git push origin HEAD
