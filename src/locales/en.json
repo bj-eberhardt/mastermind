@@ -1,0 +1,34 @@
+{
+  "settings-overlay": {
+    "title": "Settings",
+    "subtitle": "Please configure the settings.",
+    "options": {
+      "roundsCount": "Number of rounds ({min}–{max}):",
+      "roundsCountValidation": "Value must be between {min} and {max}.",
+      "fields": "Number of fields ({min}–{max}):",
+      "fieldsValidation": "Value must be between {min} and {max}.",
+      "allowColorDuplicate": "Allow duplicate colors",
+      "colorCount": "Number of colors ({min}–{max}):",
+      "colorCountValidation": "Color count must be between {min} and {max}."
+    }
+  },
+  "toast": {
+    "ok": "OK",
+    "win": {
+      "title": "You Won",
+      "message": "You have won"
+    },
+    "loose": {
+      "title": "You Lost",
+      "message": "You have lost"
+    }
+  },
+  "mainMenu": {
+    "newGame": "New Game",
+    "options": "Options"
+  },
+  "game": {
+    "check": "Check",
+    "secret": "Secret"
+  }
+}
