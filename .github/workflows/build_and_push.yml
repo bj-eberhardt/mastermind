@@ -72,5 +72,5 @@ jobs:
         run: |
           docker tag mastermind-vue:test ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:latest
-          docker tag mastermind-vue:test ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:${{ steps.get-version.outputs.version }}"
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:${{ steps.get-version.outputs.version }}"
+          docker tag mastermind-vue:test ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:${{ steps.get-version.outputs.version }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:${{ steps.get-version.outputs.version }}
