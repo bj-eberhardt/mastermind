@@ -1,0 +1,9 @@
+FROM node:lts-alpine AS builder
+
+WORKDIR /app
+COPY ../package*.json ./
+RUN ls -al
+RUN npm ci
+
+COPY .. .
+RUN npm run build
