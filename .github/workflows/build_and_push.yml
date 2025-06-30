@@ -17,6 +17,14 @@ jobs:
         with:
           token: ${{ secrets.GH_PAT }}
 
+      - name: Get latest commit information
+        id: message
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=format:"%s%n%n%b")
+          echo "message<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMIT_MSG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: 🔧 Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -57,6 +65,9 @@ jobs:
           curl --fail http://localhost:8080 && curl -s http://localhost:8080 | grep -q "<title>Mastermind</title>" || (docker logs test-container && exit 1)
           docker stop test-container
 
+      - name: Pull with rebase before pushing
+        run: git pull --rebase origin master
+
       - name: Push version and tag
         run: |
           git push origin HEAD
@@ -75,3 +86,12 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:latest
           docker tag mastermind-vue:test ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:${{ steps.get-version.outputs.version }}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:${{ steps.get-version.outputs.version }}
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.get-version.outputs.version }}
+          release_name: 'Release ${{ steps.get-version.outputs.version }}'
+          body: ${{ steps.message.outputs.message }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
