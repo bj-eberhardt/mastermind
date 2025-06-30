@@ -59,13 +59,13 @@ jobs:
       - name: Push version and tag
         run: |
           git push origin HEAD
-          git push origin --tags    
+          git push origin --tags
 
       - name: Use new version
         id: get-version
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          echo "version=$VERSION" >> $GITHUB_OUTPUT    
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Tag and push Docker image
         if: success()
