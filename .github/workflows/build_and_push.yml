@@ -25,6 +25,15 @@ jobs:
       - name: 🏗️ Build Vue project
         run: npm run build
 
+      - name: Increase version for release
+        run: |
+          npm version patch -m "chore(release): bump to %s"
+        env:
+          GIT_AUTHOR_NAME: GitHub Actions
+          GIT_AUTHOR_EMAIL: actions@github.com
+          GIT_COMMITTER_NAME: GitHub Actions
+          GIT_COMMITTER_EMAIL: actions@github.com
+
       - name: 🐳 Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -45,8 +54,21 @@ jobs:
           curl --fail http://localhost:8080 && curl -s http://localhost:8080 | grep -q "<title>Mastermind</title>" || (docker logs test-container && exit 1)
           docker stop test-container
 
+      - name: Push version and tag
+        run: |
+          git push origin HEAD
+          git push origin --tags    
+
+      - name: Use new version
+        id: get-version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT    
+
       - name: Tag and push Docker image
         if: success()
         run: |
           docker tag mastermind-vue:test ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:latest
+          docker tag mastermind-vue:test ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:${{ steps.get-version.outputs.version }}"
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:${{ steps.get-version.outputs.version }}"
