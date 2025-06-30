@@ -1,5 +1,12 @@
 {
   "name": "mastermind-vue",
+  "description": "Mastermind game built with Vue",
+  "homepage": "https://bjoern.familie-bark.de",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/beberhardt/mastermind.git"
+  },
+  "author": "Bjoern Bark",
   "version": "0.0.1",
   "type": "module",
   "scripts": {
