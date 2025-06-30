@@ -2,7 +2,9 @@
   <div>
     <div v-if="modelValue" class="mx-auto max-w-md space-y-6 rounded-xl bg-white p-6 shadow-lg">
       <div>
-        <label class="mb-1 block text-sm font-medium">Anzahl Runden (5–30):</label>
+        <label class="mb-1 block text-sm font-medium">{{
+          t('settings-overlay.options.roundsCount', { min: 5, max: 30 })
+        }}</label>
         <input
           type="number"
           v-model.number="modelValue.roundsCount"
@@ -11,10 +13,14 @@
           min="5"
           max="30"
         />
-        <p v-if="!validRounds" class="text-sm text-red-500">Wert muss zwischen 5 und 30 liegen.</p>
+        <p v-if="!validRounds" class="text-sm text-red-500">
+          {{ t('settings-overlay.options.roundsCountValidation', { min: 5, max: 30 }) }}
+        </p>
       </div>
       <div>
-        <label class="mb-1 block text-sm font-medium">Anzahl Felder (3–5):</label>
+        <label class="mb-1 block text-sm font-medium">{{
+          t('settings-overlay.options.fields', { min: 3, max: 5 })
+        }}</label>
         <input
           type="number"
           v-model.number="modelValue.fields"
@@ -23,7 +29,9 @@
           min="3"
           max="5"
         />
-        <p v-if="!validFields" class="text-sm text-red-500">Wert muss zwischen 3 und 5 liegen.</p>
+        <p v-if="!validFields" class="text-sm text-red-500">
+          {{ t('settings-overlay.options.fieldsValidation', { min: 3, max: 5 }) }}
+        </p>
       </div>
 
       <div class="flex items-center space-x-2">
@@ -33,12 +41,14 @@
           id="colorDuplicate"
           class="form-checkbox"
         />
-        <label for="colorDuplicate" class="text-sm">Doppelte Farben erlauben</label>
+        <label for="colorDuplicate" class="text-sm">{{
+          t('settings-overlay.options.allowColorDuplicate')
+        }}</label>
       </div>
 
       <div>
         <label class="mb-1 block text-sm font-medium">
-          Anzahl Farben ({{ minColorCount }}–8):
+          {{ t('settings-overlay.options.colorCount', { min: minColorCount, max: 8 }) }}
         </label>
         <input
           type="number"
@@ -49,7 +59,7 @@
           :class="{ 'border-red-500': !validColorCount }"
         />
         <p v-if="!validColorCount" class="text-sm text-red-500">
-          Farbenanzahl muss zwischen {{ minColorCount }} und 8 liegen.
+          {{ t('settings-overlay.options.colorCountValidation', { min: minColorCount, max: 8 }) }}
         </p>
       </div>
 
@@ -68,6 +78,9 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue';
 import type { GameOptions } from '../types/Game';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const model = defineModel<GameOptions>();
 

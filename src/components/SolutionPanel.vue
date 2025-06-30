@@ -7,7 +7,9 @@
       class="cover ease absolute top-0 left-0 z-20 flex h-full w-full items-center justify-center rounded-lg bg-[#333] text-white shadow-[0_8px_16px_rgba(0,0,0,0.6)] transition-transform duration-[1000ms]"
       :class="{ open }"
     >
-      <div class="pointer-events-none text-center text-[0.9rem] font-bold">Geheimer Code</div>
+      <div class="pointer-events-none text-center text-[0.9rem] font-bold">
+        {{ t('game.secret') }}
+      </div>
     </div>
     <div class="flex gap-[10px] rounded-[8px] bg-[#eeeeee] p-2 shadow-inner">
       <div
@@ -21,6 +23,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 defineProps<{
   open: boolean;
   solution: string[];

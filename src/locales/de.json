@@ -1,0 +1,34 @@
+{
+  "settings-overlay": {
+    "title": "Einstellungen",
+    "subtitle": "Bitte nehmen Sie die Einstellungen vor.",
+    "options": {
+      "roundsCount": "Anzahl Runden ({min}–{max}):",
+      "roundsCountValidation": "Wert muss zwischen {min} und {max} liegen.",
+      "fields": "Anzahl Felder ({min}–{max}):",
+      "fieldsValidation": "Wert muss zwischen {min} und {max} liegen.",
+      "allowColorDuplicate": "Doppelte Farben erlauben",
+      "colorCount": "Anzahl Farben ({min}–{max}):",
+      "colorCountValidation": "Farbenanzahl muss zwischen {min} und {max} liegen."
+    }
+  },
+  "toast": {
+    "ok": "OK",
+    "win": {
+      "title": "Gewonnen",
+      "message": "Sie haben gewonnen"
+    },
+    "loose": {
+      "title": "Verloren",
+      "message": "Sie haben verloren"
+    }
+  },
+  "mainMenu": {
+    "newGame": "Neues Spiel",
+    "options": "Optionen"
+  },
+  "game": {
+    "check": "Prüfen",
+    "secret": "Geheimnis"
+  }
+}

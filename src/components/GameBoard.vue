@@ -9,6 +9,9 @@ import BoardButton from './BoardButton.vue';
 import GameplayBoard from './GameplayBoard.vue';
 import GameOptionsPanel from './GameOptionsPanel.vue';
 import Toast from './Toast.vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const showOptionsDialog = ref(false);
 const showWinDialog = ref(false);
@@ -75,12 +78,12 @@ onMounted(() => {
     :style="{ backgroundImage: `url(${woodTexture})` }"
   >
     <Overlay
-      title="Einstellungen"
+      :title="t('settings-overlay.title')"
       confirm="OK"
       :show-cancel="false"
       cancel="Cancel"
       v-if="showOptionsDialog"
-      :message="'Bitte nehmen Sie die Einstellungen vor.'"
+      :message="t('settings-overlay.subtitle')"
       @confirm="
         showOptionsDialog = false;
         saveSettings();
@@ -96,8 +99,16 @@ onMounted(() => {
         ></GameOptionsPanel>
       </template>
     </Overlay>
-    <toast title="Gewonnen" :message="'Sie haben gewonnen'" v-model="showWinDialog"></toast>
-    <toast title="Verloren" :message="'Sie haben verloren'" v-model="showLooseDialog"></toast>
+    <toast
+      :title="t('toast.win.title')"
+      :message="t('toast.win.message')"
+      v-model="showWinDialog"
+    ></toast>
+    <toast
+      :title="t('toast.loose.title')"
+      :message="t('toast.loose.message')"
+      v-model="showLooseDialog"
+    ></toast>
 
     <gameplay-board
       v-if="inGame"
@@ -111,8 +122,8 @@ onMounted(() => {
     </div>
 
     <div class="menu mt-15">
-      <board-button text="New game" @click="newGame"></board-button>
-      <board-button text="Options" @click="showOptionsDialog = true"></board-button>
+      <board-button :text="t('mainMenu.newGame')" @click="newGame"></board-button>
+      <board-button :text="t('mainMenu.options')" @click="showOptionsDialog = true"></board-button>
     </div>
   </div>
 </template>
@@ -124,15 +135,6 @@ button:active {
 </style>
 
 <style scoped>
-.mastermind-board {
-  width: 475px;
-  background: saddlebrown;
-  border: 5px solid #000;
-  padding: 20px;
-  margin: 0 auto;
-  border-radius: 15px;
-}
-
 .color-picker {
   display: flex;
   gap: 15px;

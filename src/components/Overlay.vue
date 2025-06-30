@@ -45,7 +45,7 @@ function clickCancel() {
 }
 
 // Block ESC key
-function handleKeyDown(event) {
+function handleKeyDown(event: KeyboardEvent) {
   if (event.key === 'Escape') {
     event.preventDefault();
     event.stopPropagation();
@@ -60,33 +60,3 @@ onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleKeyDown);
 });
 </script>
-
-<style scoped>
-.overlay {
-  position: absolute; /* oder fixed, je nach Bedarf */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.dialog {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  min-width: 300px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.buttons {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-}
-</style>

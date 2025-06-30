@@ -16,7 +16,7 @@
         @update="(index, color) => (round.guesses[index] = color)"
       >
         <board-button
-          text="Check"
+          :text="t('game.check')"
           :hidden="currentRoundNotFilled"
           v-if="index == game.getCurrentRound()"
           @click="check"
@@ -33,7 +33,8 @@ import { getArrayWith } from '../utils/sharedUtils.js';
 import BoardButton from './BoardButton.vue';
 import SolutionPanel from './SolutionPanel.vue';
 import RoundLine from './RoundLine.vue';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 const props = defineProps<{
   options: GameOptions;
 }>();
