@@ -25,10 +25,30 @@
   },
   "mainMenu": {
     "newGame": "New Game",
-    "options": "Options"
+    "options": "Options",
+    "stats": "Stats"
   },
   "game": {
     "check": "Check",
     "secret": "Secret"
+  },
+  "stats": {
+    "title": "Statistics",
+    "totalGames": "Total Games",
+    "wins": "Wins",
+    "losses": "Losses",
+    "avgMoves": "Avg Moves (Win)",
+    "bestMoves": "Best Attempt",
+    "worstMoves": "Worst Attempt",
+    "duplicateAllowed": "with color duplicates allowed",
+    "duplicateNotAllowed": "without color duplicates",
+    "settingsTitle": "{fieldLabel} with {roundLabel} and {colorLabel} ({duplicateText})",
+    "fields": "field | fields",
+    "rounds": "round | rounds",
+    "colors": "color | colors"
+  },
+  "stats-overlay": {
+    "title": "Stats",
+    "subtitle": "Here you can see your achievements:"
   }
 }
