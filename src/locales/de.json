@@ -25,10 +25,31 @@
   },
   "mainMenu": {
     "newGame": "Neues Spiel",
-    "options": "Optionen"
+    "options": "Optionen",
+    "stats": "Statistiken"
   },
   "game": {
     "check": "Prüfen",
     "secret": "Geheimnis"
+  },
+  "stats": {
+    "title": "Statistiken",
+    "settings": "Einstellungen: {colors} Farben, {attempts} Versuche",
+    "totalGames": "Gesamte Spiele",
+    "wins": "Gewonnen",
+    "losses": "Verloren",
+    "avgMoves": "Ø Züge (Sieg)",
+    "bestMoves": "Bester Versuch",
+    "worstMoves": "Schlechtester Versuch",
+    "duplicateAllowed": "mit erlaubten Farbdoppelungen",
+    "duplicateNotAllowed": "ohne erlaubte Farbdoppelungen",
+    "settingsTitle": "{fieldLabel} bei {roundLabel} und {colorLabel} ({duplicateText})",
+    "fields": "Feld | Felder",
+    "rounds": "Runde | Runden",
+    "colors": "Spielfarbe | Spielfarben"
+  },
+  "stats-overlay": {
+    "title": "Statistiken",
+    "subtitle": "Hier sind deine Erfolge"
   }
 }

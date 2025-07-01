@@ -18,7 +18,7 @@
         <board-button
           :text="t('game.check')"
           :hidden="currentRoundNotFilled"
-          v-if="index == game.getCurrentRound()"
+          v-if="index == game.getCurrentRound() && game.getGameState() == 'inProgress'"
           @click="check"
         ></board-button>
       </round-line>
@@ -34,6 +34,10 @@ import BoardButton from './BoardButton.vue';
 import SolutionPanel from './SolutionPanel.vue';
 import RoundLine from './RoundLine.vue';
 import { useI18n } from 'vue-i18n';
+import { useStatsStore } from '../store/games-stats-store.js';
+const statsStore = useStatsStore();
+statsStore.loadFromStorage();
+
 const { t } = useI18n();
 const props = defineProps<{
   options: GameOptions;
@@ -77,8 +81,10 @@ watch(
   () => game.getGameState(),
   (newState: GameState) => {
     if (newState === 'won') {
+      statsStore.recordWin(props.options, game.getCurrentRound() + 1);
       emit('won');
     } else if (newState === 'loose') {
+      statsStore.recordLoss(props.options);
       emit('loose');
     }
   }

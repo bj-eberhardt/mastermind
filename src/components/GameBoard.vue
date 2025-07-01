@@ -10,12 +10,14 @@ import GameplayBoard from './GameplayBoard.vue';
 import GameOptionsPanel from './GameOptionsPanel.vue';
 import Toast from './Toast.vue';
 import { useI18n } from 'vue-i18n';
+import StatsDisplay from './StatsDisplay.vue';
 
 const { t } = useI18n();
 
 const showOptionsDialog = ref(false);
 const showWinDialog = ref(false);
 const showLooseDialog = ref(false);
+const showStatsDialog = ref(false);
 
 // default options
 const options = reactive<GameOptions>({
@@ -84,6 +86,7 @@ onMounted(() => {
       cancel="Cancel"
       v-if="showOptionsDialog"
       :message="t('settings-overlay.subtitle')"
+      :useCustomConfirmValidation="true"
       @confirm="
         showOptionsDialog = false;
         saveSettings();
@@ -97,6 +100,21 @@ onMounted(() => {
           @validation="setValid"
           v-model="options"
         ></GameOptionsPanel>
+      </template>
+    </Overlay>
+    <Overlay
+      :title="t('stats-overlay.title')"
+      confirm="OK"
+      :show-cancel="false"
+      cancel=""
+      v-if="showStatsDialog"
+      :message="t('stats-overlay.subtitle')"
+      :useCustomConfirmValidation="false"
+      @confirm="showStatsDialog = false"
+      @cancel="showStatsDialog = false"
+    >
+      <template #body>
+        <StatsDisplay v-if="showStatsDialog"></StatsDisplay>
       </template>
     </Overlay>
     <toast
@@ -124,6 +142,7 @@ onMounted(() => {
     <div class="menu mt-15">
       <board-button :text="t('mainMenu.newGame')" @click="newGame"></board-button>
       <board-button :text="t('mainMenu.options')" @click="showOptionsDialog = true"></board-button>
+      <board-button :text="t('mainMenu.stats')" @click="showStatsDialog = true"></board-button>
     </div>
   </div>
 </template>
