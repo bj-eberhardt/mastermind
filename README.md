@@ -4,6 +4,8 @@ The game **"Mastermind"** or also called **"SuperHirn"** implemented with Vue3 a
 
 You can see the version live at: https://mastermind.app.familie-bark.de/
 
+![Screenshot](img/screenshot-main-screen.png)
+
 ## Use via docker
 
 Just deploy the docker image on your machine, configure the ports and enjoy:
