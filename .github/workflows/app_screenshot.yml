@@ -32,8 +32,7 @@ jobs:
         run: npm install puppeteer
 
       - name: Create Puppeteer screenshot script and run it
-        run: |
-          run: node scripts/screenshot.js
+        run: node scripts/screenshot.js
           
       - name: Upload screenshot artifact
         uses: actions/upload-artifact@v4
