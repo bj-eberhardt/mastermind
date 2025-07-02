@@ -41,16 +41,28 @@ jobs:
           path: img/
           retention-days: 7
 
-      - name: Add updated screenshot to git
-        run: |
-           git add img/*.png
-           git commit -m "chore: update screenshots [skip ci]" || echo "Nothing to commit"
-           git push origin HEAD
+      - name: Commit & push changed screenshots
         env:
           GIT_AUTHOR_NAME: GitHub Actions
           GIT_AUTHOR_EMAIL: actions@github.com
           GIT_COMMITTER_NAME: GitHub Actions
           GIT_COMMITTER_EMAIL: actions@github.com
+        run: |
+          changed=0
+          for file in img/*.png; do
+            if ! git diff --quiet "$file"; then
+              echo "Changes detected in $file"
+              git add "$file"
+              changed=1
+            fi
+          done
+      
+          if [ "$changed" -eq 1 ]; then
+            git commit -m "chore: update changed screenshots [skip ci]"
+            git push origin HEAD:${{ github.ref }}
+          else
+            echo "Keine Änderungen – nichts zu committen"
+          fi    
 
       - name: Stop docker image
         run: |
