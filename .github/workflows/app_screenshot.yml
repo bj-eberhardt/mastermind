@@ -1,7 +1,7 @@
 name: Create screenshot
 
 on:
-  workflow_dispatch:  
+  workflow_dispatch:
 
 jobs:
   screenshot:
@@ -20,7 +20,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t mastermind-vue:test .    
+          docker build -t mastermind-vue:test .
 
       - name: Test Docker image
         run: |
@@ -33,12 +33,12 @@ jobs:
 
       - name: Create Puppeteer screenshot script and run it
         run: node scripts/screenshot.js
-          
+
       - name: Upload screenshot artifact
         uses: actions/upload-artifact@v4
         with:
           name: ui-screenshot
-          path: screenshot.png    
+          path: screenshot.png
           retention-days: 7
 
       - name: Stop docker image

@@ -76,6 +76,7 @@ onMounted(() => {
 
 <template>
   <div
+    data-element-id="main-screen"
     class="mx-auto w-[475px] rounded-[15px] border-[5px] border-black bg-[saddlebrown] p-5"
     :style="{ backgroundImage: `url(${woodTexture})` }"
   >
