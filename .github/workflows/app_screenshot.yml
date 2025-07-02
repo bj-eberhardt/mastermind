@@ -3,7 +3,7 @@ name: Create screenshot
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["Build and release"]
+    workflows: ['Build and release']
     types:
       - completed
 
@@ -60,13 +60,13 @@ jobs:
               changed=1
             fi
           done
-      
+
           if [ "$changed" -eq 1 ]; then
             git commit -m "chore: update changed screenshots [skip ci]"
             git push origin HEAD:${{ github.ref }}
           else
             echo "Keine Änderungen – nichts zu committen"
-          fi    
+          fi
 
       - name: Stop docker image
         run: |
