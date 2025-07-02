@@ -31,19 +31,9 @@ jobs:
       - name: Install dependencies
         run: npm install puppeteer
 
-      - name: Create Puppeteer screenshot script
+      - name: Create Puppeteer screenshot script and run it
         run: |
-          cat << 'EOF' > screenshot.js
-          const puppeteer = require('puppeteer');
-          (async () => {
-            const browser = await puppeteer.launch({ headless: 'new' });
-            const page = await browser.newPage();
-            await page.goto('http://localhost:8080', { waitUntil: 'networkidle0' });
-            await page.screenshot({ path: 'screenshot.png', fullPage: true });
-            await browser.close();
-          })();
-          EOF  
-          node screenshot.js 
+          run: node scripts/screenshot.js
           
       - name: Upload screenshot artifact
         uses: actions/upload-artifact@v4
