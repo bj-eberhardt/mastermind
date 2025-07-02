@@ -41,6 +41,17 @@ jobs:
           path: img/
           retention-days: 7
 
+      - name: Add updated screenshot to git
+        run: |
+           git add img/*.png
+           git commit -m "chore: update screenshots [skip ci]" || echo "Nothing to commit"
+           git push origin HEAD
+        env:
+          GIT_AUTHOR_NAME: GitHub Actions
+          GIT_AUTHOR_EMAIL: actions@github.com
+          GIT_COMMITTER_NAME: GitHub Actions
+          GIT_COMMITTER_EMAIL: actions@github.com
+
       - name: Stop docker image
         run: |
           docker stop test-container
