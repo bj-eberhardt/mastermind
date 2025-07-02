@@ -1,0 +1,57 @@
+name: Create screenshot
+
+on:
+  workflow_dispatch:  
+
+jobs:
+  screenshot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_PAT }}
+
+      - name: 🔧 Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Build Docker image
+        run: |
+          docker build -t mastermind-vue:test .    
+
+      - name: Test Docker image
+        run: |
+          docker run -d -p 8080:80 --name test-container mastermind-vue:test
+          sleep 5
+          curl --fail http://localhost:8080 && curl -s http://localhost:8080 | grep -q "<title>Mastermind</title>" || (docker logs test-container && exit 1)
+
+      - name: Install dependencies
+        run: npm install puppeteer
+
+      - name: Create Puppeteer screenshot script
+        run: |
+          cat << 'EOF' > screenshot.js
+          const puppeteer = require('puppeteer');
+          (async () => {
+            const browser = await puppeteer.launch({ headless: 'new' });
+            const page = await browser.newPage();
+            await page.goto('http://localhost:8080', { waitUntil: 'networkidle0' });
+            await page.screenshot({ path: 'screenshot.png', fullPage: true });
+            await browser.close();
+          })();
+          EOF  
+          node screenshot.js 
+          
+      - name: Upload screenshot artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-screenshot
+          path: screenshot.png    
+          retention-days: 7
+
+      - name: Stop docker image
+        run: |
+          docker stop test-container
