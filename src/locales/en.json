@@ -1,4 +1,11 @@
 {
+  "help-overlay": {
+    "title": "Help",
+    "subtitle": "Rules of Mastermind",
+    "paragraph1": "Mastermind is a logic game where you have to guess the secret color combination. The computer selects a combination of colors, and you try to guess it.",
+    "paragraph2": "The colors must be dragged and dropped onto the game board. When all fields of a row (round) are filled, a button labeled <strong>“Check”</strong> appears to the right of the row, allowing you to evaluate your input.",
+    "paragraph3": "Under <em>Options</em>, you can customize the game board, for example by changing the number of colors or the size of the board."
+  },
   "settings-overlay": {
     "title": "Settings",
     "subtitle": "Please configure the settings.",

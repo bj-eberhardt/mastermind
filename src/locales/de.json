@@ -1,4 +1,11 @@
 {
+  "help-overlay": {
+    "title": "Hilfe",
+    "subtitle": "Regeln von Mastermind",
+    "paragraph1": "Mastermind ist ein Denkspiel, bei dem du die geheime Farbkombination erraten musst. Der Computer wählt eine Kombination aus Farben, und du versuchst, diese zu erraten.",
+    "paragraph2": "Die Farben müssen per Drag & Drop auf das Spielbrett gezogen werden. Wenn alle Felder einer Reihe (Runde) belegt sind, erscheint rechts neben der Reihe der Button <strong>„Prüfen“</strong>, mit dem du deine Eingabe bewerten kannst.",
+    "paragraph3": "Unter <em>Optionen</em> kannst du das Spielbrett individuell anpassen und zum Beispiel die Anzahl der Farben oder die Größe des Brettes verändern."
+  },
   "settings-overlay": {
     "title": "Einstellungen",
     "subtitle": "Bitte nehmen Sie die Einstellungen vor.",

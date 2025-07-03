@@ -1,5 +1,10 @@
 <template>
-  <div class="flex flex-col">
+  <div class="relative flex flex-col">
+    <div class="absolute top-2 right-2 flex cursor-pointer space-x-2">
+      <sound-button></sound-button>
+      <help-button></help-button>
+    </div>
+
     <div class="flex self-center">
       <solution-panel
         :open="['won', 'loose'].includes(game.getGameState())"
@@ -35,9 +40,12 @@ import SolutionPanel from './SolutionPanel.vue';
 import RoundLine from './RoundLine.vue';
 import { useI18n } from 'vue-i18n';
 import { useStatsStore } from '../store/games-stats-store.js';
+import { useSoundPlayer } from '../composables/useSound.js';
+import SoundButton from './SoundButton.vue';
+import HelpButton from './HelpButton.vue';
 const statsStore = useStatsStore();
 statsStore.loadFromStorage();
-
+const { playWin, playLose } = useSoundPlayer();
 const { t } = useI18n();
 const props = defineProps<{
   options: GameOptions;
@@ -82,9 +90,11 @@ watch(
   (newState: GameState) => {
     if (newState === 'won') {
       statsStore.recordWin(props.options, game.getCurrentRound() + 1);
+      playWin();
       emit('won');
     } else if (newState === 'loose') {
       statsStore.recordLoss(props.options);
+      playLose();
       emit('loose');
     }
   }
