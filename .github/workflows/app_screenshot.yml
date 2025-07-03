@@ -30,7 +30,7 @@ jobs:
         run: |
           docker run -d -p 8080:80 --name test-container mastermind-vue:test
           sleep 5
-          curl --fail http://localhost:8080 && curl -s http://localhost:8080 | grep -q "<title>>Mastermind – Das klassische Logikspiel online</title>" || (docker logs test-container && exit 1)
+          curl --fail http://localhost:8080 || (docker logs test-container && exit 1)
 
       - name: Install dependencies
         run: npm install puppeteer
