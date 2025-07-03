@@ -2,7 +2,7 @@
   <div class="fixed inset-0 z-[1000] flex h-full w-full items-center justify-center bg-black/50">
     <div class="min-w-[300px] rounded bg-white p-8 shadow-[0_5px_15px_rgba(0,0,0,0.3)]">
       <h2 class="text-center text-2xl font-bold">{{ title }}</h2>
-      <p class="text-2l font-semibold">{{ message }}</p>
+      <p v-if="message" class="text-2l font-semibold">{{ message }}</p>
       <p><slot name="body" :setValid="setValid"></slot></p>
       <div class="mt-4 flex justify-end gap-4">
         <button
@@ -23,7 +23,7 @@ import { onMounted, onBeforeUnmount, ref } from 'vue';
 const emit = defineEmits(['confirm', 'cancel']);
 withDefaults(
   defineProps<{
-    message: string;
+    message?: string;
     title: string;
     confirm: string;
     cancel: string;

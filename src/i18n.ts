@@ -1,6 +1,10 @@
 import { createI18n } from 'vue-i18n';
 
 function getBrowserLocale(fallback = 'en'): string {
+  const localeFromUrl = new URLSearchParams(window.location.search).get('lang');
+  if (localeFromUrl) {
+    return localeFromUrl;
+  }
   const locale = navigator.language || navigator.languages[0];
   return locale.split('-')[0] || fallback; // "de-DE" → "de"
 }

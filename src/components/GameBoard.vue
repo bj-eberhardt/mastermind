@@ -27,6 +27,7 @@ const options = reactive<GameOptions>({
   colors: ['red', 'blue', 'green', 'yellow', 'purple', 'cyan'],
 });
 
+const loaded = ref(false);
 // needed for repainting if new game was started
 const inGame = ref(true);
 
@@ -71,81 +72,88 @@ const showEndGameDialog = async (type: 'win' | 'loose'): Promise<void> => {
 onMounted(() => {
   loadGameSettings();
   newGame();
+  loaded.value = true;
 });
 </script>
 
 <template>
-  <div
-    data-element-id="main-screen"
-    class="mx-auto w-[475px] rounded-[15px] border-[5px] border-black bg-[saddlebrown] p-5"
-    :style="{ backgroundImage: `url(${woodTexture})` }"
-  >
-    <Overlay
-      :title="t('settings-overlay.title')"
-      confirm="OK"
-      :show-cancel="false"
-      cancel="Cancel"
-      v-if="showOptionsDialog"
-      :message="t('settings-overlay.subtitle')"
-      :useCustomConfirmValidation="true"
-      @confirm="
-        showOptionsDialog = false;
-        saveSettings();
-        newGame();
-      "
-      @cancel="showOptionsDialog = false"
+  <transition name="slide-down">
+    <div
+      v-if="loaded"
+      data-element-id="main-screen"
+      class="mx-auto w-[475px] rounded-[15px] border-[5px] border-black bg-[saddlebrown] p-5"
+      :style="{ backgroundImage: `url(${woodTexture})` }"
     >
-      <template #body="{ setValid }">
-        <GameOptionsPanel
-          v-if="options && showOptionsDialog"
-          @validation="setValid"
-          v-model="options"
-        ></GameOptionsPanel>
-      </template>
-    </Overlay>
-    <Overlay
-      :title="t('stats-overlay.title')"
-      confirm="OK"
-      :show-cancel="false"
-      cancel=""
-      v-if="showStatsDialog"
-      :message="t('stats-overlay.subtitle')"
-      :useCustomConfirmValidation="false"
-      @confirm="showStatsDialog = false"
-      @cancel="showStatsDialog = false"
-    >
-      <template #body>
-        <StatsDisplay v-if="showStatsDialog"></StatsDisplay>
-      </template>
-    </Overlay>
-    <toast
-      :title="t('toast.win.title')"
-      :message="t('toast.win.message')"
-      v-model="showWinDialog"
-    ></toast>
-    <toast
-      :title="t('toast.loose.title')"
-      :message="t('toast.loose.message')"
-      v-model="showLooseDialog"
-    ></toast>
+      <Overlay
+        :title="t('settings-overlay.title')"
+        confirm="OK"
+        :show-cancel="false"
+        cancel="Cancel"
+        v-if="showOptionsDialog"
+        :message="t('settings-overlay.subtitle')"
+        :useCustomConfirmValidation="true"
+        @confirm="
+          showOptionsDialog = false;
+          saveSettings();
+          newGame();
+        "
+        @cancel="showOptionsDialog = false"
+      >
+        <template #body="{ setValid }">
+          <GameOptionsPanel
+            v-if="options && showOptionsDialog"
+            @validation="setValid"
+            v-model="options"
+          ></GameOptionsPanel>
+        </template>
+      </Overlay>
+      <Overlay
+        :title="t('stats-overlay.title')"
+        confirm="OK"
+        :show-cancel="false"
+        cancel=""
+        v-if="showStatsDialog"
+        :message="t('stats-overlay.subtitle')"
+        :useCustomConfirmValidation="false"
+        @confirm="showStatsDialog = false"
+        @cancel="showStatsDialog = false"
+      >
+        <template #body>
+          <StatsDisplay v-if="showStatsDialog"></StatsDisplay>
+        </template>
+      </Overlay>
+      <toast
+        :title="t('toast.win.title')"
+        :message="t('toast.win.message')"
+        v-model="showWinDialog"
+      ></toast>
+      <toast
+        :title="t('toast.loose.title')"
+        :message="t('toast.loose.message')"
+        v-model="showLooseDialog"
+      ></toast>
 
-    <gameplay-board
-      v-if="inGame"
-      :options="options"
-      @won="showEndGameDialog('win')"
-      @loose="showEndGameDialog('loose')"
-    ></gameplay-board>
+      <gameplay-board
+        v-if="inGame"
+        :options="options"
+        @won="showEndGameDialog('win')"
+        @loose="showEndGameDialog('loose')"
+      ></gameplay-board>
 
-    <div class="color-picker mt-15">
-      <color-picker :colors="options.colors"></color-picker>
+      <div class="color-picker mt-15">
+        <color-picker :colors="options.colors"></color-picker>
+      </div>
+
+      <div class="menu mt-15">
+        <board-button :text="t('mainMenu.newGame')" @click="newGame"></board-button>
+        <board-button
+          :text="t('mainMenu.options')"
+          @click="showOptionsDialog = true"
+        ></board-button>
+        <board-button :text="t('mainMenu.stats')" @click="showStatsDialog = true"></board-button>
+      </div>
     </div>
-
-    <div class="menu mt-15">
-      <board-button :text="t('mainMenu.newGame')" @click="newGame"></board-button>
-      <board-button :text="t('mainMenu.options')" @click="showOptionsDialog = true"></board-button>
-      <board-button :text="t('mainMenu.stats')" @click="showStatsDialog = true"></board-button>
-    </div>
-  </div>
+  </transition>
 </template>
 
 <style scoped>
@@ -160,5 +168,19 @@ button:active {
   gap: 15px;
   margin-top: 30px;
   justify-content: center;
+}
+
+.slide-down-enter-active {
+  animation: slideDown 1s ease-out;
+}
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 </style>
