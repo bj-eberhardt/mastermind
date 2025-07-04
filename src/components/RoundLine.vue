@@ -26,6 +26,7 @@
           @dragover.prevent
           @dragenter.prevent
           @drop="dropHandler(index, $event)"
+          :id="'field-' + index"
         />
       </template>
     </div>
