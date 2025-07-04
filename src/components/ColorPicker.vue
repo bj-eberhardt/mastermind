@@ -8,6 +8,7 @@
       :style="{ background: color }"
       draggable="true"
       @dragstart="dragStart($event, color)"
+      :id="'color-picker-' + index"
       class="h-7 w-7 cursor-pointer rounded-full border-2 border-gray-500"
     ></div>
   </div>

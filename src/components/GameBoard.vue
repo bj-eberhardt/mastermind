@@ -11,13 +11,19 @@ import GameOptionsPanel from './GameOptionsPanel.vue';
 import Toast from './Toast.vue';
 import { useI18n } from 'vue-i18n';
 import StatsDisplay from './StatsDisplay.vue';
+import ElementToElementAnimation from './ElementToElementAnimation.vue';
+import { useStatsStore } from '../store/games-stats-store.js';
 
 const { t } = useI18n();
+const statsStore = useStatsStore();
+statsStore.loadFromStorage();
 
 const showOptionsDialog = ref(false);
 const showWinDialog = ref(false);
 const showLooseDialog = ref(false);
 const showStatsDialog = ref(false);
+const showDragAnimation = ref(statsStore.entries.length === 0);
+const showDragAnimationCount = ref(3);
 
 // default options
 const options = reactive<GameOptions>({
@@ -67,6 +73,16 @@ const showEndGameDialog = async (type: 'win' | 'loose'): Promise<void> => {
       showLooseDialog.value = true;
       break;
   }
+};
+
+const onDragAnimationEnd = async (): Promise<void> => {
+  showDragAnimation.value = false;
+  showDragAnimationCount.value -= 1;
+  if (showDragAnimationCount.value < 0) {
+    return;
+  }
+  await nextTick();
+  showDragAnimation.value = true;
 };
 
 onMounted(() => {
@@ -152,6 +168,15 @@ onMounted(() => {
         ></board-button>
         <board-button :text="t('mainMenu.stats')" @click="showStatsDialog = true"></board-button>
       </div>
+      <ElementToElementAnimation
+        v-if="showDragAnimation"
+        @done="onDragAnimationEnd"
+        from-id="color-picker-0"
+        to-id="field-0"
+        :duration="3000"
+      >
+        <i-mdi-cursor-pointer class="h-8 w-8 text-[#e2d7d7]"></i-mdi-cursor-pointer>
+      </ElementToElementAnimation>
     </div>
   </transition>
 </template>
