@@ -1,11 +1,11 @@
-import { useSoundStore } from '../store/sound.ts';
 import startSoundUrl from '/src/assets/sounds/intro.mp3';
 import looseSoundUrl from '/src/assets/sounds/loose.mp3';
 import winSoundUrl from '/src/assets/sounds/win.mp3';
 import { watch } from 'vue';
+import { useGameSettingsStore } from '../store/game-settings-store.js';
 
 export function useSoundPlayer() {
-  const store = useSoundStore();
+  const { currentOptions } = useGameSettingsStore();
 
   const audios: Record<string, HTMLAudioElement> = {
     start: new Audio(startSoundUrl),
@@ -21,7 +21,7 @@ export function useSoundPlayer() {
   }
 
   watch(
-    () => store.enabled,
+    () => currentOptions.soundEnabled,
     (newVal) => {
       if (!newVal) {
         stopAll();
@@ -30,7 +30,7 @@ export function useSoundPlayer() {
   );
 
   function play(soundKey: 'start' | 'win' | 'lose') {
-    if (!store.enabled) return;
+    if (!currentOptions.soundEnabled) return;
     const audio = audios[soundKey];
     audio.pause();
     audio.currentTime = 0;
