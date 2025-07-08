@@ -7,6 +7,7 @@
 
     <div class="flex self-center">
       <solution-panel
+        data-element-id="solution"
         :open="['won', 'loose'].includes(game.getGameState())"
         :solution="solution"
       ></solution-panel>
@@ -19,20 +20,27 @@
         :data="round"
         :readonly="game.getCurrentRound() !== index || game.getGameState() != 'inProgress'"
         @update="(index, color) => (round.guesses[index] = color)"
+        :colors="game.colors"
       >
         <board-button
+          :type="width < 375 ? 'icon' : 'text'"
+          :hint="t('game.check')"
           :text="t('game.check')"
           :hidden="currentRoundNotFilled"
           v-if="index == game.getCurrentRound() && game.getGameState() == 'inProgress'"
           @click="check"
-        ></board-button>
+        >
+          <template #icon>
+            <i-mdi-check-circle class="h-6 w-6 text-2xl text-[#e2d7d7]" />
+          </template>
+        </board-button>
       </round-line>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { Game, GameOptions, GameState } from '../types/Game.js';
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, nextTick, reactive, ref, watch } from 'vue';
 import { GameRow } from '../types/GameRow.js';
 import { getArrayWith } from '../utils/sharedUtils.js';
 import BoardButton from './BoardButton.vue';
@@ -45,6 +53,9 @@ import SoundButton from './SoundButton.vue';
 import HelpButton from './HelpButton.vue';
 const statsStore = useStatsStore();
 statsStore.loadFromStorage();
+import { useWindowSize } from '@vueuse/core';
+
+const { width } = useWindowSize();
 const { playWin, playLose } = useSoundPlayer();
 const { t } = useI18n();
 const props = defineProps<{
@@ -76,14 +87,28 @@ const currentRoundNotFilled = computed<boolean>(() => {
 
 watch(
   () => game.getGameState(),
-  (newState: GameState) => {
+  async (newState: GameState) => {
     switch (newState) {
       case 'won':
       case 'loose':
+        scrollToSolution();
+        await nextTick();
         solution.value = game.getSolution();
     }
   }
 );
+
+function scrollToSolution() {
+  const el = document.querySelector('[data-element-id="solution"]');
+  if (!el) return;
+
+  const rect = el.getBoundingClientRect();
+  const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
+
+  if (!isVisible) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
 
 watch(
   () => game.getGameState(),

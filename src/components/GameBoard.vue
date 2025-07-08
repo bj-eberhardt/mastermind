@@ -11,49 +11,27 @@ import GameOptionsPanel from './GameOptionsPanel.vue';
 import Toast from './Toast.vue';
 import { useI18n } from 'vue-i18n';
 import StatsDisplay from './StatsDisplay.vue';
-import ElementToElementAnimation from './ElementToElementAnimation.vue';
 import { useStatsStore } from '../store/games-stats-store.js';
+import IntroFirstUsage from './IntroFirstUsage.vue';
+import { useGameSettingsStore } from '../store/game-settings-store.js';
 
 const { t } = useI18n();
 const statsStore = useStatsStore();
 statsStore.loadFromStorage();
 
+const { currentOptions, updateSettings } = useGameSettingsStore();
+
 const showOptionsDialog = ref(false);
 const showWinDialog = ref(false);
 const showLooseDialog = ref(false);
 const showStatsDialog = ref(false);
-const showDragAnimation = ref(statsStore.entries.length === 0);
-const showDragAnimationCount = ref(3);
 
 // default options
-const options = reactive<GameOptions>({
-  roundsCount: 5,
-  fields: 4,
-  allowColorDuplicate: false,
-  colors: ['red', 'blue', 'green', 'yellow', 'purple', 'cyan'],
-});
+const options = reactive<GameOptions>(currentOptions);
 
 const loaded = ref(false);
 // needed for repainting if new game was started
 const inGame = ref(true);
-
-// load settings from localstorage
-const loadGameSettings = (): void => {
-  const settings = localStorage.getItem('settings');
-  if (!settings) {
-    return;
-  }
-  const parsed = JSON.parse(settings) as GameOptions;
-  Object.assign(options, parsed);
-  console.debug(`Loaded settings: ${settings}`, options);
-};
-
-// save settings to localstorage
-const saveSettings = (): void => {
-  const settings = JSON.stringify(options);
-  console.debug(`Save settings: ${settings}`);
-  localStorage.setItem('settings', settings);
-};
 
 // start new game by forcing a repaint of component
 const newGame = async (): Promise<void> => {
@@ -75,18 +53,7 @@ const showEndGameDialog = async (type: 'win' | 'loose'): Promise<void> => {
   }
 };
 
-const onDragAnimationEnd = async (): Promise<void> => {
-  showDragAnimation.value = false;
-  showDragAnimationCount.value -= 1;
-  if (showDragAnimationCount.value < 0) {
-    return;
-  }
-  await nextTick();
-  showDragAnimation.value = true;
-};
-
 onMounted(() => {
-  loadGameSettings();
   newGame();
   loaded.value = true;
 });
@@ -97,7 +64,7 @@ onMounted(() => {
     <div
       v-if="loaded"
       data-element-id="main-screen"
-      class="mx-auto w-[475px] rounded-[15px] border-[5px] border-black bg-[saddlebrown] p-5"
+      class="mx-auto w-full max-w-[470px] overflow-x-hidden rounded-[15px] border-[5px] border-black bg-[saddlebrown] p-2 sm:p-5"
       :style="{ backgroundImage: `url(${woodTexture})` }"
     >
       <Overlay
@@ -110,7 +77,7 @@ onMounted(() => {
         :useCustomConfirmValidation="true"
         @confirm="
           showOptionsDialog = false;
-          saveSettings();
+          updateSettings(options);
           newGame();
         "
         @cancel="showOptionsDialog = false"
@@ -160,7 +127,7 @@ onMounted(() => {
         <color-picker :colors="options.colors"></color-picker>
       </div>
 
-      <div class="menu mt-15">
+      <div class="menu mt-15 flex grid auto-cols-fr grid-flow-col justify-center">
         <board-button :text="t('mainMenu.newGame')" @click="newGame"></board-button>
         <board-button
           :text="t('mainMenu.options')"
@@ -168,15 +135,7 @@ onMounted(() => {
         ></board-button>
         <board-button :text="t('mainMenu.stats')" @click="showStatsDialog = true"></board-button>
       </div>
-      <ElementToElementAnimation
-        v-if="showDragAnimation"
-        @done="onDragAnimationEnd"
-        from-id="color-picker-0"
-        to-id="field-0"
-        :duration="3000"
-      >
-        <i-mdi-cursor-pointer class="h-8 w-8 text-[#e2d7d7]"></i-mdi-cursor-pointer>
-      </ElementToElementAnimation>
+      <intro-first-usage></intro-first-usage>
     </div>
   </transition>
 </template>
