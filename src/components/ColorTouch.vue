@@ -85,7 +85,6 @@ const circlePosition = (index: number) => {
 const radius = 60;
 const holeRadius = 15;
 
-// Style für Overlay mit Loch
 const holeStyle = computed(() => {
   const size = radius * 2;
   return {
