@@ -94,6 +94,42 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
+      - name: Parse test results
+        id: parse
+        run: |
+          passed=$(jq '[.suites[].specs[].tests[] | select(.results[].status == "passed")] | length' playwright-report/test-results.json)
+          failed=$(jq '[.suites[].specs[].tests[] | select(.results[].status == "failed")] | length' playwright-report/test-results.json)
+          total=$(jq '[.suites[].specs[].tests[]] | length' playwright-report/test-results.json)
+          echo "summary=**Playwright Test Summary**: ✅ $passed / ❌ $failed / 🧪 $total tests" >> $GITHUB_OUTPUT
+
+      - name: Update PR description with test summary
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+
+            const body = pr.data.body || "";
+            const marker = "<!-- PLAYWRIGHT-RESULTS -->";
+            const summary = `${marker}\n${process.env.SUMMARY}\n${marker}`;
+
+            // Replace or append summary
+            const newBody = body.includes(marker)
+              ? body.replace(new RegExp(`${marker}[\\s\\S]*${marker}`), summary)
+              : `${body}\n\n${summary}`;
+
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              body: newBody
+            });
+        env:
+          SUMMARY: ${{ steps.parse.outputs.summary }}
+
       - name: Cleanup
         if: always()
         run: docker rm -f test-container || true
