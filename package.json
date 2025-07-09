@@ -7,7 +7,7 @@
     "url": "https://github.com/beberhardt/mastermind.git"
   },
   "author": "Bjoern Bark",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "type": "module",
   "scripts": {
     "dev": "vite",
