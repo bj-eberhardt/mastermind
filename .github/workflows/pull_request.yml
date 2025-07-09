@@ -101,7 +101,7 @@ jobs:
           passed=$(jq '[.suites[].specs[].tests[] | select(.results[].status == "passed")] | length' playwright-report/test-results.json)
           failed=$(jq '[.suites[].specs[].tests[] | select(.results[].status == "failed")] | length' playwright-report/test-results.json)
           total=$(jq '[.suites[].specs[].tests[]] | length' playwright-report/test-results.json)
-          artifact_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts"
+          artifact_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           echo "summary=**Playwright Test Summary**: ✅ $passed / ❌ $failed / 🧪 $total tests%0A📊 [Complete test result]($artifact_url)" >> $GITHUB_OUTPUT
 
       - name: Add test summary
