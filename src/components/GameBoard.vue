@@ -86,7 +86,8 @@ onMounted(() => {
           <GameOptionsPanel
             v-if="options && showOptionsDialog"
             @validation="setValid"
-            v-model="options"
+            :modelValue="options"
+            @update:modelValue="(newValue) => Object.assign(options, newValue)"
           ></GameOptionsPanel>
         </template>
       </Overlay>
