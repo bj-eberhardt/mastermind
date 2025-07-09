@@ -8,3 +8,4 @@ const app = createApp(App);
 app.use(i18n);
 app.use(createPinia());
 app.mount('#app');
+document.addEventListener('contextmenu', (e) => e.preventDefault());
