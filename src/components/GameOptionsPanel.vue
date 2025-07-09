@@ -6,6 +6,7 @@
           t('settings-overlay.options.roundsCount', { min: 5, max: 30 })
         }}</label>
         <input
+          data-element-id="cfg.rounds"
           type="number"
           v-model.number="modelValue.roundsCount"
           class="w-full rounded-md border p-2"
@@ -22,6 +23,7 @@
           t('settings-overlay.options.fields', { min: 3, max: 5 })
         }}</label>
         <input
+          data-element-id="cfg.fields"
           type="number"
           v-model.number="modelValue.fields"
           class="w-full rounded-md border p-2"
@@ -36,6 +38,7 @@
 
       <div class="flex items-center space-x-2">
         <input
+          data-element-id="cfg.allowColorDuplicates"
           type="checkbox"
           v-model="modelValue.allowColorDuplicate"
           id="colorDuplicate"
@@ -51,6 +54,7 @@
           {{ t('settings-overlay.options.colorCount', { min: minColorCount, max: 8 }) }}
         </label>
         <input
+          data-element-id="cfg.colorCount"
           type="number"
           v-model.number="colorCount"
           :min="minColorCount"
@@ -135,7 +139,7 @@ if (model.value) {
     () => model.value.fields,
     (newFields) => {
       const min = newFields + 2;
-      if (colorCount.value < min) colorCount.value = min;
+      if (colorCount.value < min) colorCount.value = Math.min(min, predefinedColors.length);
     }
   );
 }

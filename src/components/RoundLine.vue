@@ -15,6 +15,7 @@
           :key="index"
           class="h-[30px] w-[30px] rounded-full border-2 border-[#888888] bg-[#444444]"
           :style="{ background: item ?? '#444' }"
+          :data-color="item"
         />
       </template>
       <template v-else>
@@ -27,7 +28,10 @@
           @dragenter.prevent
           @drop="dropHandler(index, $event)"
           @touchstart="showOverlay(index, $event)"
+          @mousedown="showOverlay(index, $event)"
           :id="'field-' + index"
+          :data-element-id="'field-' + index"
+          :data-color="item"
         />
       </template>
     </div>
@@ -42,11 +46,13 @@
       <div
         v-for="(item, index) in data.results"
         :key="index"
+        :data-element-id="'result-' + index"
+        :data-result="item"
         class="h-3 w-3 rounded-full border border-[#f7e7d2]"
         :class="{
           'bg-white': item === 'white',
           'bg-black': item === 'black',
-          'bg-transparent': item === 'noMatch',
+          'bg-transparent': item === 'noMatch' || item === 'unset',
           'bg-gray-400': !['white', 'black', 'noMatch'].includes(item),
         }"
       ></div>
