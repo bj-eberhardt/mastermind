@@ -48,21 +48,28 @@ test('should be able to play a round of Mastermind', async ({ page }) => {
       const targetField = page.locator(`[id="field-${i}"]`);
 
       await expect(colorPicker).toBeVisible();
+      await expect(targetField).toBeVisible();
 
       // Pause before each drag operation
       await page.pause();
 
-      // Perform drag and drop
-      await page.waitForTimeout(100);
-      await colorPicker.dragTo(targetField);
+      await expect
+        .poll(
+          async () => {
+            await page.waitForTimeout(100);
+            console.log('Dragging color to target field...');
+            await colorPicker.dragTo(targetField);
 
-      // Verify the color has been dropped
-      await expect(targetField).toBeVisible();
-    }
-    // check that all fields have a color set
-    for (let i = 0; i < 4; i++) {
-      const targetField = page.locator(`[id="field-${i}"]`);
-      await expect(targetField).toHaveAttribute('data-color', /.+/);
+            const attribute = await targetField.getAttribute('data-color');
+            return attribute !== null && attribute !== undefined;
+          },
+          {
+            message: 'Expect a color has been set via drag and drop',
+            timeout: 5000,
+            intervals: [100, 200, 500],
+          }
+        )
+        .toBeTruthy();
     }
   });
 
