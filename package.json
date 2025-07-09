@@ -18,7 +18,11 @@
     "lint:fix": "eslint . --ext .ts,.vue --fix",
     "check": "npm run lint:fix && npm run format",
     "prepare": "husky",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:ci": "playwright test"
   },
   "lint-staged": {
     "*.{js,ts,vue}": [
