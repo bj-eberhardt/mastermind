@@ -17,7 +17,8 @@
     "format": "prettier --write .",
     "lint:fix": "eslint . --ext .ts,.vue --fix",
     "check": "npm run lint:fix && npm run format",
-    "prepare": "husky install"
+    "prepare": "husky",
+    "postinstall": "husky install"
   },
   "lint-staged": {
     "*.{js,ts,vue}": [
