@@ -95,37 +95,27 @@ jobs:
           retention-days: 30
 
       - name: Parse test results
+        if: always()
         id: parse
         run: |
           passed=$(jq '[.suites[].specs[].tests[] | select(.results[].status == "passed")] | length' playwright-report/test-results.json)
           failed=$(jq '[.suites[].specs[].tests[] | select(.results[].status == "failed")] | length' playwright-report/test-results.json)
           total=$(jq '[.suites[].specs[].tests[]] | length' playwright-report/test-results.json)
-          echo "summary=**Playwright Test Summary**: ✅ $passed / ❌ $failed / 🧪 $total tests" >> $GITHUB_OUTPUT
+          artifact_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts"
+          echo "summary=**Playwright Test Summary**: ✅ $passed / ❌ $failed / 🧪 $total tests%0A📊 [Complete test result]($artifact_url)" >> $GITHUB_OUTPUT
 
-      - name: Update PR description with test summary
+      - name: Add test summary
+        id: tests_results_summary
+        if: always()
         uses: actions/github-script@v7
         with:
           script: |
-            const pr = await github.rest.pulls.get({
+            const summary = `${process.env.SUMMARY}`;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.issue.number
-            });
-
-            const body = pr.data.body || "";
-            const marker = "<!-- PLAYWRIGHT-RESULTS -->";
-            const summary = `${marker}\n${process.env.SUMMARY}\n${marker}`;
-
-            // Replace or append summary
-            const newBody = body.includes(marker)
-              ? body.replace(new RegExp(`${marker}[\\s\\S]*${marker}`), summary)
-              : `${body}\n\n${summary}`;
-
-            await github.rest.pulls.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number,
-              body: newBody
+              body: summary.replace(/%0A/g, '\n')  // Ersetze %0A durch echte Zeilenumbrüche
             });
         env:
           SUMMARY: ${{ steps.parse.outputs.summary }}
