@@ -46,5 +46,7 @@ test-output/
 #
 build-output/
 
+playwright-report/
+
 # dynamically created component mapping used by unplugin-vue-components
 components.d.ts
