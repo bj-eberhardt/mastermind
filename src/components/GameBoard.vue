@@ -130,6 +130,7 @@ onMounted(() => {
       <div class="menu mt-15 flex grid auto-cols-fr grid-flow-col justify-center">
         <board-button :text="t('mainMenu.newGame')" @click="newGame"></board-button>
         <board-button
+          data-element-id="options.dialog"
           :text="t('mainMenu.options')"
           @click="showOptionsDialog = true"
         ></board-button>

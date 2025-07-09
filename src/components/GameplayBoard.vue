@@ -16,6 +16,7 @@
     <div class="user-input rounds flex flex-col-reverse">
       <round-line
         v-for="(round, index) in board"
+        :data-element-id="'round-' + index"
         :key="index"
         :data="round"
         :readonly="game.getCurrentRound() !== index || game.getGameState() != 'inProgress'"
@@ -23,6 +24,7 @@
         :colors="game.colors"
       >
         <board-button
+          data-element-id="check-button"
           :type="width < 375 ? 'icon' : 'text'"
           :hint="t('game.check')"
           :text="t('game.check')"
@@ -68,7 +70,7 @@ const game = reactive(new Game(props.options));
 const board = ref<GameRow[]>(
   Array.from({ length: props.options.roundsCount }, () => ({
     guesses: getArrayWith(props.options.fields, undefined),
-    results: getArrayWith(props.options.fields, 'noMatch'),
+    results: getArrayWith(props.options.fields, 'unset'),
   }))
 );
 const solution = ref<string[]>(getArrayWith(props.options.fields, ''));
