@@ -123,7 +123,7 @@ onMounted(() => {
         @loose="showEndGameDialog('loose')"
       ></gameplay-board>
 
-      <div class="color-picker mt-15">
+      <div class="mt-[30px] flex justify-center">
         <color-picker :colors="options.colors"></color-picker>
       </div>
 
@@ -148,13 +148,6 @@ button:active {
 </style>
 
 <style scoped>
-.color-picker {
-  display: flex;
-  gap: 15px;
-  margin-top: 30px;
-  justify-content: center;
-}
-
 .slide-down-enter-active {
   animation: slideDown 1s ease-out;
 }
