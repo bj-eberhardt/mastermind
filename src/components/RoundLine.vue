@@ -2,7 +2,7 @@
   <div
     v-if="data"
     :class="[
-      'row relative flex flex-wrap items-center pt-4 pb-4 pl-8 sm:pl-12',
+      'row xs:pl-8 relative flex flex-wrap items-center pt-4 pb-4 pl-2 sm:pl-12',
       prop.readonly ? '' : 'highlighted',
       !prop.readonly ? '' : 'readonly',
       'border-t border-dotted border-gray-400 last:border-none',
@@ -119,14 +119,23 @@ async function showOverlay(index: number, e: Event) {
   border-top: 2px dotted gray;
 }
 
-.row.highlighted::before {
-  content: '➤';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 2em;
-  color: #1d4ed8;
-  line-height: 1;
+@media (min-width: 350px) {
+  .row.highlighted::before {
+    content: '➤';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2em;
+    color: #1d4ed8;
+    line-height: 1;
+  }
+}
+
+@media (max-width: 350px) {
+  .row.highlighted {
+    background-color: rgba(205, 193, 193, 0.2);
+    border-radius: 15px;
+  }
 }
 </style>
