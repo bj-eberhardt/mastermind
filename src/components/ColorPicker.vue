@@ -40,9 +40,10 @@ onMounted(() => {
     // check if color picker in viewport, otherwise make it sticky
     observer = new IntersectionObserver(
       ([entry]) => {
+        console.log('is intersecting', entry.isIntersecting);
         isSticky.value = !entry.isIntersecting;
       },
-      { threshold: 0.01 }
+      { threshold: 0.1 }
     );
     observer.observe(sentinel.value);
   }
