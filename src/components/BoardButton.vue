@@ -4,7 +4,7 @@
     :style="{ visibility: hidden ? 'hidden' : 'visible' }"
   >
     <button
-      class="mx-sm-3 relative mx-1 my-2 transform rounded-lg bg-[#8B5E3C] px-2 py-1 text-base font-bold text-white shadow-[0_4px_#5c3a21] transition-all duration-100 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_6px_#5c3a21] active:translate-y-[2px] active:shadow-[0_2px_#5c3a21] disabled:cursor-not-allowed disabled:opacity-50 sm:mx-2 sm:px-4 sm:py-2"
+      class="mx-sm-3 relative mx-1 my-2 transform rounded-lg border border-solid border-[#463232] bg-[#8B5E3C] px-2 py-1 text-base font-bold text-white shadow-[0_4px_#5c3a21] transition-all duration-100 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_6px_#5c3a21] active:translate-y-[2px] active:shadow-[0_2px_#5c3a21] disabled:cursor-not-allowed disabled:opacity-50 sm:mx-2 sm:px-4 sm:py-2"
       :disabled="disabled"
       @click="$emit('click')"
     >
