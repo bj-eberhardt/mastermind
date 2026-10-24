@@ -7,7 +7,7 @@
     "url": "https://github.com/beberhardt/mastermind.git"
   },
   "author": "Bjoern Bark",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "engines": {
     "node": ">=24"
   },
@@ -58,7 +58,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
     "prettier": "^3.9.10",
-    "prettier-eslint": "^16.4.2",
+    "prettier-eslint": "^17.1.2",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "sass-embedded": "^1.106.1",
     "tailwindcss": "^4.3.3",
