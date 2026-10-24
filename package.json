@@ -7,7 +7,7 @@
     "url": "https://github.com/beberhardt/mastermind.git"
   },
   "author": "Bjoern Bark",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "engines": {
     "node": ">=24"
   },
