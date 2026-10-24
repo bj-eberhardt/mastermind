@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
           token: ${{ secrets.GH_PAT }}
 
@@ -26,9 +26,9 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: 🔧 Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version-file: .nvmrc
 
       - name: 📦 Install dependencies
         run: npm ci
@@ -46,10 +46,10 @@ jobs:
           GIT_COMMITTER_EMAIL: actions@github.com
 
       - name: 🐳 Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: 🔑 Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -88,10 +88,10 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/mastermind:${{ steps.get-version.outputs.version }}
 
       - name: Create GitHub Release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v3
         with:
-          tag_name: ${{ steps.get-version.outputs.version }}
-          release_name: 'Release ${{ steps.get-version.outputs.version }}'
+          tag_name: v${{ steps.get-version.outputs.version }}
+          name: 'Release ${{ steps.get-version.outputs.version }}'
           body: ${{ steps.message.outputs.message }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
