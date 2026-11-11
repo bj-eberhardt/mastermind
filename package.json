@@ -60,7 +60,7 @@
     "prettier": "^3.9.10",
     "prettier-eslint": "^17.1.2",
     "prettier-plugin-tailwindcss": "^0.8.1",
-    "sass-embedded": "^1.106.1",
+    "sass-embedded": "^1.108.1",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.72.0",
